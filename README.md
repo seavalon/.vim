@@ -1,0 +1,2 @@
+# vimrc
+Sevavalon's vimrc
