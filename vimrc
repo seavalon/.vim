@@ -130,6 +130,9 @@ Plugin 'scrooloose/syntastic'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'mhinz/vim-startify'
+Plugin 'pangloss/vim-javascript'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'othree/javascript-libraries-syntax.vim'
 
 call vundle#end()
 
@@ -161,6 +164,22 @@ nnoremap ]b :bn<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/cpp/ycm/.ycm_extra_conf.py'  
 let g:syntastic_always_populate_loc_list = 1
 let g:ycm_confirm_extra_conf = 0
+let g:ycm_min_num_of_chars_for_completion = 3 
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_complete_in_comments = 1
+let g:ycm_key_list_select_completion = ['<tab>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+
+function! MyTabFunction ()
+     let line = getline('.')
+     let substr = strpart(line, -1, col('.')+1)
+     let substr = matchstr(substr, "[^ \t]*$")
+     if strlen(substr) == 0
+         return "\<tab>"
+     endif
+     return pumvisible() ? "\<c-n>" : "\<c-x>\<c-o>"
+endfunction
+inoremap <tab> <c-r>=MyTabFunction()<cr>
 
 "set tagbar
 
@@ -201,3 +220,9 @@ nnoremap <Leader>fu :CtrlPFunky<Cr>
 nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 let g:ctrlp_funky_syntax_highlight = 1
 let g:ctrlp_extensions = ['funky']
+
+" set directory 
+autocmd FileType javascript set dictionary+=~/.vim/dict/javascript.dict
+autocmd FileType javascript set dictionary+=~/.vim/dict/css.dict
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+let g:used_javascript_libs = 'react,jquery,angularjs,angularui,requirejs'
